@@ -1,22 +1,20 @@
 'use strict';
 
 const path = require('path');
-const toJson = require('./lib/to-json.js');
+const toJson = require('./Generators/index-generator.js');
+const hexoConfig = hexo.config;
 
-class to_json_generator {
+class ToJsonConfig {
     constructor(perPage, base, url) {
-        this.perPage = perPage || 10;
+        this.perPage = perPage || hexoConfig.per_page || 10;
         this.base = base;
         this.url = url;
     }
 }
 
-const defaultConfig = new to_json_generator(hexo.config.per_page,
-    path.join(path.sep, 'to-json', path.sep), hexo.config.url);
+const defaultToJsonConfig = new ToJsonConfig(hexoConfig.per_page,
+    path.join(path.sep, 'to-json', path.sep), hexoConfig.url);
 
-console.log(defaultConfig);
-
-hexo.config.to_json_generator = Object.assign({}, defaultConfig, hexo.config.to_json_generator);
+hexoConfig.to_json_generator = Object.assign({}, defaultToJsonConfig, hexoConfig.to_json_generator);
 
 hexo.extend.generator.register('to-json', toJson);
-console.log('end============');
