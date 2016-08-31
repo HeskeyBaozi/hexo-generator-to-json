@@ -19,9 +19,8 @@
   "devDependencies": {
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.14.0",
+    "hexo-pagination": "^0.1.0",
     "webpack": "^1.13.2"
   },
-  "dependencies": {
-    "hexo-pagination": "^0.1.0"
-  }
+  "dependencies": {}
 }

@@ -1,27 +1,26 @@
 'use strict';
 
-const pagination = require('hexo-pagination');
-const postGenerator = require('./post-generator.js');
-const cateGenerator = require('./categories-generator.js');
-const tagGenerator = require('./tag-generator.js');
-const configGenerator = require('./config-generator.js');
+const postsGen = require('./posts-generator.js');
+const categoriesGen = require('./categories-generator.js');
+const tagsGen = require('./tag-generator.js');
+const configGen = require('./config-generator.js');
+const pagesGen = require('./pages-generator.js');
+
+const stringify = array => array.map(item => {
+    item.data = JSON.stringify(item.data);
+    return item;
+});
 
 
 module.exports = function (locals) {
-    let that = this;
+    const hexoConfig = this.config;
+    const themeConfig = this.theme.config;
 
-
-    return configGenerator(that.config, that.theme.config).map(item=> {
-        item.data = JSON.stringify(item.data);
-        return item;
-    }).concat(postGenerator(locals.posts).map(item=> {
-        item.data = JSON.stringify(item.data);
-        return item;
-    })).concat(cateGenerator(locals.categories).map(item=> {
-        item.data = JSON.stringify(item.data);
-        return item;
-    })).concat(tagGenerator(locals.tags).map(item=> {
-        item.data = JSON.stringify(item.data);
-        return item;
-    }));
+    return stringify(
+        configGen(hexoConfig, themeConfig)
+            .concat(pagesGen(locals.posts, hexoConfig))
+            .concat(postsGen(locals.posts))
+            .concat(categoriesGen(locals.categories))
+            .concat(tagsGen(locals.tags))
+    );
 };
