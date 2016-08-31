@@ -4,7 +4,7 @@ const path = require('path');
 const toJson = require('./Generators/index-generator.js');
 const hexoConfig = hexo.config;
 
-class ToJsonConfig {
+class ToJsonGenerator {
     constructor(perPage, base, url) {
         this.perPage = perPage || hexoConfig.per_page || 10;
         this.base = base;
@@ -12,9 +12,16 @@ class ToJsonConfig {
     }
 }
 
-const defaultToJsonConfig = new ToJsonConfig(hexoConfig.per_page,
-    path.join(path.sep, 'to-json', path.sep), hexoConfig.url);
+const defaultToJsonConfig = new ToJsonGenerator(
+    hexoConfig.per_page,
+    path.join(path.sep, 'to-json', path.sep),
+    hexoConfig.url
+);
 
-hexoConfig.to_json_generator = Object.assign({}, defaultToJsonConfig, hexoConfig.to_json_generator);
+hexoConfig.to_json_generator = Object.assign(
+    {},
+    defaultToJsonConfig,
+    hexoConfig.to_json_generator
+);
 
 hexo.extend.generator.register('to-json', toJson);
