@@ -2,6 +2,9 @@
 
 const path = require('path');
 const HexoRouter = require('../Components/HexoRouter.js');
-const Url = require('../Components/Url.js');
+const Config = require('../Components/Config.js');
 
-module.exports = toJsonConfig => hexoConfig => [new HexoRouter(Url(toJsonConfig.base).config, hexoConfig)];
+module.exports = (hexoConfig, themeConfig) => {
+    let data = new Config(hexoConfig, themeConfig);
+    return [new HexoRouter(path.join('test', 'config', `${data.name}.json`), data)];
+};
