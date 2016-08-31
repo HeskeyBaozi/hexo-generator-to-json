@@ -1,6 +1,6 @@
 {
   "name": "hexo-generator-to-json",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "hexo generator to json data",
   "main": "dist/index.js",
   "scripts": {
