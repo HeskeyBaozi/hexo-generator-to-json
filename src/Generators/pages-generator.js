@@ -20,5 +20,5 @@ module.exports = (posts, hexoConfig) => {
     let archives = paginator('archives', posts).map(convertor(Type.archives));
     let pages = paginator('pages', posts).map(convertor(Type.pages));
 
-    return archives.concat(pages);
+    return [...archives, ...pages];
 };

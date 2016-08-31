@@ -1,6 +1,9 @@
 'use strict';
 var webpack = require('webpack');
 var path = require('path');
+var myPackage = require('./package');
+var banner = `${myPackage.name} ${myPackage.version} - ${myPackage.description}\nCopyright (c) ${ new Date().getFullYear() } ${myPackage.author} - ${myPackage.homepage}\nLicense: ${myPackage.license}`;
+
 
 module.exports = {
     context: path.resolve(__dirname, './src'),
@@ -18,5 +21,8 @@ module.exports = {
                 presets: ['es2015']
             }
         }]
-    }
+    },
+    plugins: [
+        new webpack.BannerPlugin(banner)
+    ]
 };

@@ -16,11 +16,9 @@ module.exports = function (locals) {
     const hexoConfig = this.config;
     const themeConfig = this.theme.config;
 
-    return stringify(
-        configGen(hexoConfig, themeConfig)
-            .concat(pagesGen(locals.posts, hexoConfig))
-            .concat(postsGen(locals.posts))
-            .concat(categoriesGen(locals.categories))
-            .concat(tagsGen(locals.tags))
-    );
+    return stringify([...configGen(hexoConfig, themeConfig),
+        ...pagesGen(locals.posts, hexoConfig),
+        ...postsGen(locals.posts),
+        ...categoriesGen(locals.categories),
+        ...tagsGen(locals.tags)]);
 };

@@ -1,10 +1,10 @@
 {
   "name": "hexo-generator-to-json",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "hexo generator to json data",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack -p"
   },
   "repository": {
     "type": "git",
