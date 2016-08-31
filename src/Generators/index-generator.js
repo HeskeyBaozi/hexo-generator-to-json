@@ -1,16 +1,21 @@
 'use strict';
 
 const pagination = require('hexo-pagination');
-const configGen = require('./config-generator.js');
-const postGen = require('./post-generator.js');
+const postGenerator = require('./post-generator.js');
+const cateGenerator = require('./categories-generator.js');
+const tagGenerator = require('./tag-generator.js');
 
 
 module.exports = function (locals) {
 
-    let hexoConfig = this.config;
-    let toJsonConfig = hexoConfig.to_json_generator;
-    return postGen(toJsonConfig)(locals.posts).map(item=> {
+    return postGenerator(locals.posts).map(item=> {
         item.data = JSON.stringify(item.data);
         return item;
-    });
+    }).concat(cateGenerator(locals.categories).map(item=> {
+        item.data = JSON.stringify(item.data);
+        return item;
+    })).concat(tagGenerator(locals.tags).map(item=> {
+        item.data = JSON.stringify(item.data);
+        return item;
+    }));
 };
