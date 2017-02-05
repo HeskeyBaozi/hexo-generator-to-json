@@ -1,11 +1,8 @@
 {
   "name": "hexo-generator-to-json",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "hexo generator to json data",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "webpack -p"
-  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HeskeyBaozi/hexo-generator-to-json.git"
@@ -16,11 +13,7 @@
     "url": "https://github.com/HeskeyBaozi/hexo-generator-to-json/issues"
   },
   "homepage": "https://github.com/HeskeyBaozi/hexo-generator-to-json#readme",
-  "devDependencies": {
-    "babel-loader": "^6.2.5",
-    "babel-preset-es2015": "^6.14.0",
-    "hexo-pagination": "^0.1.0",
-    "webpack": "^1.13.2"
-  },
-  "dependencies": {}
+  "dependencies": {
+    "normalizr": "^3.1.0"
+  }
 }
