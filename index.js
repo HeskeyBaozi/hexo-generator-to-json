@@ -20,7 +20,7 @@ function prefixFactory(prefix) {
     function getModified(object) {
         return {
             path: prefix + SEP + object.path,
-            data: JSON.stringify(object.data)
+            data: JSON.stringify(object.data || {})
         };
     }
 
