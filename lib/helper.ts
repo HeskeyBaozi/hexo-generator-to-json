@@ -5,6 +5,7 @@ import plainObject = toJson.plainObject;
 import route = toJson.route;
 import rawToJsonConfig = toJson.rawToJsonConfig;
 import toJsonConfig = toJson.toJsonConfig;
+import {Moment} from 'moment';
 
 
 const SEP: string = '/';
@@ -100,4 +101,12 @@ export function merge(rawConfig: rawToJsonConfig, defaultConfig: toJsonConfig): 
         }
     });
     return result;
+}
+
+export function momentCompare(left: Moment, right: Moment): number {
+    if (left.isAfter(right))
+        return -1;
+    else if (left.isSame(right))
+        return 0;
+    else return 1;
 }

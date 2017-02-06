@@ -95,3 +95,12 @@ function merge(rawConfig, defaultConfig) {
     return result;
 }
 exports.merge = merge;
+function momentCompare(left, right) {
+    if (left.isAfter(right))
+        return -1;
+    else if (left.isSame(right))
+        return 0;
+    else
+        return 1;
+}
+exports.momentCompare = momentCompare;

@@ -8,7 +8,7 @@ function generatePosts(rawPostsList, selectors, extracts) {
     }
     var posts = rawPostsList
         .filter(function (rawPost) { return rawPost.published; })
-        .sort(function (left, right) { return left.date.unix() - right.date.unix(); })
+        .sort(function (left, right) { return helper_1.momentCompare(left.date, right.date); })
         .map(function (rawPost) { return helper_1.createSelectedObject(rawPost, selectors); });
     var postsNormalized = normalizr_1.normalize(posts, [schema_1.post]);
     var basicResult = Object.keys(postsNormalized.entities.posts).map(function (post_id) {
@@ -20,7 +20,7 @@ function generatePosts(rawPostsList, selectors, extracts) {
     function generateRoutes(rawPostsList, propName) {
         var selected = rawPostsList
             .filter(function (rawPost) { return rawPost.published; })
-            .sort(function (left, right) { return left.date.unix() - right.date.unix(); })
+            .sort(function (left, right) { return helper_1.momentCompare(left.date, right.date); })
             .map(function (rawPost) { return helper_1.createSelectedObject(rawPost, [propName, { path: '_id', rename: 'post_id' }]); });
         var normalized = normalizr_1.normalize(selected, [new normalizr_1.schema.Entity('posts', {}, { idAttribute: 'post_id' })]);
         return Object.keys(normalized.entities.posts).map(function (post_id) {
@@ -43,7 +43,7 @@ function generatePages(rawPagesList, selectors, extracts) {
         selectors.push({ path: '_id', rename: 'page_id' });
     }
     var pages = rawPagesList
-        .sort(function (left, right) { return left.date.unix() - right.date.unix(); })
+        .sort(function (left, right) { return helper_1.momentCompare(left.date, right.date); })
         .map(function (rawPage) { return helper_1.createSelectedObject(rawPage, selectors); });
     var pagesNormalized = normalizr_1.normalize(pages, [schema_1.page]);
     var basicResult = Object.keys(pagesNormalized.entities.pages).map(function (page_id) {
@@ -54,7 +54,7 @@ function generatePages(rawPagesList, selectors, extracts) {
     });
     function generateRoutes(rawPagesList, propName) {
         var selected = rawPagesList
-            .sort(function (left, right) { return left.date.unix() - right.date.unix(); })
+            .sort(function (left, right) { return helper_1.momentCompare(left.date, right.date); })
             .map(function (rawPage) { return helper_1.createSelectedObject(rawPage, [propName, { path: '_id', rename: 'page_id' }]); });
         var normalized = normalizr_1.normalize(selected, [new normalizr_1.schema.Entity('pages', {}, { idAttribute: 'page_id' })]);
         return Object.keys(normalized.entities.pages).map(function (page_id) {
