@@ -70,7 +70,7 @@ export function generatePages(rawPagesList: rawPage[], selectors: selectors, ext
                 .sort((left, right) => left.date.unix() - right.date.unix())
                 .map(rawPage => createSelectedObject(rawPage, [propName, {path: '_id', rename: 'page_id'}]));
 
-        const normalized = normalize(selected, [new schema.Entity('posts', {}, {idAttribute: 'page_id'})]);
+        const normalized = normalize(selected, [new schema.Entity('pages', {}, {idAttribute: 'page_id'})]);
 
         return Object.keys(normalized.entities.pages).map(page_id => {
             return {

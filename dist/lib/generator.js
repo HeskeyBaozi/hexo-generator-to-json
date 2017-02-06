@@ -47,7 +47,7 @@ function generatePages(rawPagesList, selectors, extracts) {
         var selected = rawPagesList
             .sort(function (left, right) { return left.date.unix() - right.date.unix(); })
             .map(function (rawPage) { return helper_1.createSelectedObject(rawPage, [propName, { path: '_id', rename: 'page_id' }]); });
-        var normalized = normalizr_1.normalize(selected, [new normalizr_1.schema.Entity('posts', {}, { idAttribute: 'page_id' })]);
+        var normalized = normalizr_1.normalize(selected, [new normalizr_1.schema.Entity('pages', {}, { idAttribute: 'page_id' })]);
         return Object.keys(normalized.entities.pages).map(function (page_id) {
             return {
                 path: "pages/" + page_id + "/" + propName + ".json",
