@@ -25,12 +25,12 @@ function createSelectedObject(raw, selectors) {
             if (selector.childrenSelectors) {
                 if (!hasIdRename(selector.childrenSelectors)) {
                     if (selector.path === 'tags')
-                        selectors.push({ path: '_id', rename: 'tag_id' });
+                        selector.childrenSelectors.push({ path: '_id', rename: 'tag_id' });
                     if (selector.path === 'categories')
-                        selectors.push({ path: '_id', rename: 'category_id' });
+                        selector.childrenSelectors.push({ path: '_id', rename: 'category_id' });
                 }
-                var toAdd = Array.isArray(rawValue)
-                    ? createSelectedArray(rawValue, selector.childrenSelectors)
+                var toAdd = Array.isArray(rawValue.data)
+                    ? createSelectedArray(rawValue.data, selector.childrenSelectors)
                     : createSelectedObject(rawValue, selector.childrenSelectors);
                 if (selector.rename) {
                     result[selector.rename] = toAdd;

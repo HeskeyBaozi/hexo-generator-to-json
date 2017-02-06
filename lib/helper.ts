@@ -30,16 +30,16 @@ export function createSelectedObject(raw: raw, selectors: selectors): plainObjec
         if (typeof selector === 'string') {
             result[selector as string] = raw[selector];
         } else {
-            const rawValue: raw|Array<raw> = raw[selector.path];
+            const rawValue: raw = raw[selector.path];
             if (selector.childrenSelectors) {
                 if (!hasIdRename(selector.childrenSelectors)) {
                     if (selector.path === 'tags')
-                        selectors.push({path: '_id', rename: 'tag_id'});
+                        selector.childrenSelectors.push({path: '_id', rename: 'tag_id'});
                     if (selector.path === 'categories')
-                        selectors.push({path: '_id', rename: 'category_id'});
+                        selector.childrenSelectors.push({path: '_id', rename: 'category_id'});
                 }
-                const toAdd: plainObject|Array<plainObject> = Array.isArray(rawValue)
-                    ? createSelectedArray(rawValue, selector.childrenSelectors)
+                const toAdd: plainObject|Array<plainObject> = Array.isArray(rawValue.data)
+                    ? createSelectedArray(rawValue.data, selector.childrenSelectors)
                     : createSelectedObject(rawValue, selector.childrenSelectors);
                 if (selector.rename) {
                     result[selector.rename] = toAdd;
