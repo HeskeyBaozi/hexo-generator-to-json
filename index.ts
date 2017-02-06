@@ -45,15 +45,15 @@ const defaultConfig: toJsonConfig = {
     tags: ['name'],
     categories: ['name', 'parent']
 };
-const config: toJsonConfig = merge(hexo.config.toJson, defaultConfig);
+const config: toJsonConfig = !hexo.config.toJson ? defaultConfig : merge(hexo.config.toJson, defaultConfig);
 
 
 hexo.extend.generator.register('toJson', site => {
     return addPrefix('api', [
         ...generatePages(site.pages, config.pages.selectors, config.pages.extracts),
         ...generatePosts(site.posts, config.posts.selectors, config.posts.extracts),
-        ...generateGenerally(site.tags.data, config.tags, tag, 'tags'),
-        ...generateGenerally(site.categories.data, config.categories, category, 'categories'),
+        ...generateGenerally(site.tags, config.tags, tag, 'tags'),
+        ...generateGenerally(site.categories, config.categories, category, 'categories'),
         ...generateConfigGenerally(hexo.config, 'global', config.configs.global),
         ...generateConfigGenerally(hexo.theme.config, 'theme', config.configs.theme)
     ]);

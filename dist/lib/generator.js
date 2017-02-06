@@ -72,14 +72,18 @@ function generatePages(rawPagesList, selectors, extracts) {
         }].concat(basicResult, flatten);
 }
 exports.generatePages = generatePages;
-function generateGenerally(raw, selectors, schemaType, prefix) {
+function generateGenerally(tagsOrCategories, selectors, schemaType, prefix) {
     if (!helper_1.hasIdRename(selectors)) {
         if (prefix === 'tags')
             selectors.push({ path: '_id', rename: 'tag_id' });
         if (prefix === 'categories')
             selectors.push({ path: '_id', rename: 'category_id' });
+        selectors.push({
+            path: 'posts',
+            childrenSelectors: [{ path: '_id', rename: 'post_id' }]
+        });
     }
-    var selected = helper_1.createList(raw, selectors);
+    var selected = tagsOrCategories.map(function (tagOrCategory) { return helper_1.createSelectedObject(tagOrCategory, selectors); });
     var normalized = normalizr_1.normalize(selected, [schemaType]);
     return [
         {
@@ -88,7 +92,7 @@ function generateGenerally(raw, selectors, schemaType, prefix) {
         },
         {
             path: prefix + "/entities.json",
-            data: normalized.entities
+            data: normalized.entities[prefix]
         }
     ];
 }

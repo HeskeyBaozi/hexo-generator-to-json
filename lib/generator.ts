@@ -99,15 +99,19 @@ export function generatePages(rawPagesList: rawPage[], selectors: selectors, ext
     }, ...basicResult, ...flatten];
 }
 
-export function generateGenerally(raw: raw, selectors: selectors, schemaType: Entity, prefix: string): route[] {
+export function generateGenerally(tagsOrCategories: raw[], selectors: selectors, schemaType: Entity, prefix: string): route[] {
 
     if (!hasIdRename(selectors)) {
         if (prefix === 'tags')
             selectors.push({path: '_id', rename: 'tag_id'});
         if (prefix === 'categories')
             selectors.push({path: '_id', rename: 'category_id'});
+        selectors.push({
+            path: 'posts',
+            childrenSelectors: [{path: '_id', rename: 'post_id'}]
+        });
     }
-    const selected: plainObject[] = createList(raw, selectors);
+    const selected: plainObject[] = tagsOrCategories.map(tagOrCategory => createSelectedObject(tagOrCategory, selectors));
     const normalized = normalize(selected, [schemaType]);
 
     return [
@@ -117,7 +121,7 @@ export function generateGenerally(raw: raw, selectors: selectors, schemaType: En
         },
         {
             path: `${prefix}/entities.json`,
-            data: normalized.entities
+            data: normalized.entities[prefix]
         }
     ];
 }
