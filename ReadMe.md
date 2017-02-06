@@ -18,7 +18,7 @@ the `Hexo` will quickly scan the `package.json`, and automatically run the gener
 
 the `.json`s will generated in the folder `:root/public/api`
 
-## Interface
+## Output
 
 ```js
 const interface = {
@@ -69,4 +69,50 @@ const interface = {
         }
     }
 };
+```
+
+## interface
+```typescript
+    export type selectors = (string|selector)[];
+
+    export interface selector {
+        path: string;
+        rename?: string;
+        childrenSelectors?: selectors
+    }
+
+    // toJson config in _config.yml
+    export interface rawToJsonConfig {
+        configs: boolean|{
+            global: selectors,
+            theme: selectors
+        };
+        posts: boolean|{
+            selectors: selectors,
+            extracts: string[]
+        };
+        pages: boolean|{
+            selectors: selectors,
+            extracts: string[]
+        };
+        tags: boolean|string[];
+        categories: boolean|string[];
+    }
+
+    export interface toJsonConfig {
+        configs?: {
+            global: selectors,
+            theme: selectors
+        };
+        posts?: {
+            selectors: selectors,
+            extracts: string[]
+        };
+        pages?: {
+            selectors: selectors,
+            extracts: string[]
+        };
+        tags?: string[];
+        categories?: string[];
+    }
 ```

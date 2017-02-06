@@ -1,37 +1,60 @@
 import {tag, category} from "./lib/schema";
 declare const hexo: any;
 import {toJson} from "./lib/index";
-import {addPrefix} from './lib/helper';
-import {generatePages, generatePosts, generateGenerally, generateConfig} from './lib/generator';
+import {addPrefix, merge} from './lib/helper';
+import {
+    generatePages,
+    generatePosts,
+    generateGenerally,
+    generateConfigGenerally
+} from './lib/generator';
+import toJsonConfig = toJson.toJsonConfig;
+import rawToJsonConfig = toJson.rawToJsonConfig;
 
-
-hexo.extend.generator.register('toJson', site => {
-    return addPrefix('api', [
-        ...generatePages(site.pages, [
-            'title', 'date', 'updated', 'comments',
-            'excerpt', 'more', 'source', 'full_source',
-            'path', 'permalink', 'photos', 'link',
-            {path: '_id', rename: 'page_id'}
-        ], ['content']),
-        ...generatePosts(site.posts, [
+const defaultConfig: toJsonConfig = {
+    configs: {
+        global: [
+            'title', 'subtitle', 'description', 'author', 'url'
+        ],
+        theme: []
+    },
+    posts: {
+        selectors: [
             'title', 'date', 'updated', 'comments',
             'excerpt', 'more', 'source', 'full_source',
             'path', 'permalink', 'photos', 'link',
             {
                 path: 'tags',
-                childrenSelectors: ['name', 'slug', 'permalink', {path: '_id', rename: 'tag_id'}]
+                childrenSelectors: ['name', 'slug', 'permalink']
             },
             {
                 path: 'categories',
-                childrenSelectors: ['name', 'slug', 'permalink', {path: '_id', rename: 'category_id'}]
-            },
-            {path: '_id', rename: 'post_id'}
-        ], ['content']),
-        ...generateGenerally(site.tags.data, ['name', {path: '_id', rename: 'tag_id'}], tag, 'tags'),
-        ...generateGenerally(site.categories.data, ['name', 'parent', {
-            path: '_id',
-            rename: 'category_id'
-        }], category, 'categories'),
-        ...generateConfig(hexo)
+                childrenSelectors: ['name', 'slug', 'permalink']
+            }
+        ],
+        extracts: ['content']
+    },
+    pages: {
+        selectors: [
+            'title', 'date', 'updated', 'comments',
+            'excerpt', 'more', 'source', 'full_source',
+            'path', 'permalink', 'photos', 'link'
+        ],
+        extracts: ['content']
+    },
+    tags: [],
+    categories: []
+};
+const config: toJsonConfig = merge(hexo.config.toJson, defaultConfig);
+
+
+hexo.extend.generator.register('toJson', site => {
+    return addPrefix('api', [
+        ...generatePages(site.pages, config.pages.selectors, config.pages.extracts),
+        ...generatePosts(site.posts, config.posts.selectors, config.posts.extracts),
+        ...generateGenerally(site.tags.data, config.tags, tag, 'tags'),
+        ...generateGenerally(site.categories.data, config.categories, category, 'categories'),
+        ...generateConfigGenerally(hexo.config, 'global', config.configs.global),
+        ...generateConfigGenerally(hexo.theme.config, 'theme', config.configs.theme)
     ]);
 });

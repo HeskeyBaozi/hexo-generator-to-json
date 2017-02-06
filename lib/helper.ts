@@ -3,6 +3,8 @@ import raw = toJson.raw;
 import selectors = toJson.selectors;
 import plainObject = toJson.plainObject;
 import route = toJson.route;
+import rawToJsonConfig = toJson.rawToJsonConfig;
+import toJsonConfig = toJson.toJsonConfig;
 
 
 const SEP: string = '/';
@@ -30,10 +32,15 @@ export function createSelectedObject(raw: raw, selectors: selectors): plainObjec
         } else {
             const rawValue: raw|Array<raw> = raw[selector.path];
             if (selector.childrenSelectors) {
+                if (!hasIdRename(selector.childrenSelectors)) {
+                    if (selector.path === 'tags')
+                        selectors.push({path: '_id', rename: 'tag_id'});
+                    if (selector.path === 'categories')
+                        selectors.push({path: '_id', rename: 'category_id'});
+                }
                 const toAdd: plainObject|Array<plainObject> = Array.isArray(rawValue)
                     ? createSelectedArray(rawValue, selector.childrenSelectors)
                     : createSelectedObject(rawValue, selector.childrenSelectors);
-
                 if (selector.rename) {
                     result[selector.rename] = toAdd;
                 } else {
@@ -52,4 +59,28 @@ export function createList(raw: raw, selectors: selectors): plainObject[] {
         const rawValue: raw = raw[object_id];
         return createSelectedObject(rawValue, selectors);
     });
+}
+
+export function hasIdRename(selectors: selectors): boolean {
+    return selectors.some(selector => {
+        if (typeof selector === 'string')
+            return false;
+        else
+            return selector.path === '_id' && !!selector.rename;
+    });
+}
+
+export function merge(rawConfig: rawToJsonConfig, defaultConfig: toJsonConfig): toJsonConfig {
+    const result: toJsonConfig = defaultConfig;
+    Object.keys(rawConfig).forEach(key => {
+        const rawValue: boolean|plainObject = rawConfig[key];
+        if (typeof rawValue === 'boolean') {
+            if (!rawValue) {
+                delete result[key];
+            }
+        } else {
+            result[key] = rawConfig[key];
+        }
+    });
+    return result;
 }

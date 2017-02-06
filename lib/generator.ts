@@ -4,13 +4,16 @@ import rawPost = toJson.rawPost;
 import route = toJson.route;
 import selectors = toJson.selectors;
 import plainObject = toJson.plainObject;
-import {createSelectedObject, createList} from "./helper";
+import {createSelectedObject, createList, hasIdRename} from "./helper";
 import {post, page} from "./schema";
 import rawPage = toJson.rawPage;
 import raw = toJson.raw;
 import Entity = schema.Entity;
 
 export function generatePosts(rawPostsList: rawPost[], selectors: selectors, extracts: string[]): route[] {
+    if (!hasIdRename(selectors)) {
+        selectors.push({path: '_id', rename: 'post_id'});
+    }
     const posts: plainObject[] =
         rawPostsList
             .filter(rawPost => rawPost.published)
@@ -53,6 +56,10 @@ export function generatePosts(rawPostsList: rawPost[], selectors: selectors, ext
 }
 
 export function generatePages(rawPagesList: rawPage[], selectors: selectors, extracts: string[]): route[] {
+    if (!hasIdRename(selectors)) {
+        selectors.push({path: '_id', rename: 'page_id'});
+    }
+
     const pages: plainObject[] =
         rawPagesList
             .sort((left, right) => left.date.unix() - right.date.unix())
@@ -93,6 +100,13 @@ export function generatePages(rawPagesList: rawPage[], selectors: selectors, ext
 }
 
 export function generateGenerally(raw: raw, selectors: selectors, schemaType: Entity, prefix: string): route[] {
+
+    if (!hasIdRename(selectors)) {
+        if (prefix === 'tags')
+            selectors.push({path: '_id', rename: 'tag_id'});
+        if (prefix === 'categories')
+            selectors.push({path: '_id', rename: 'category_id'});
+    }
     const selected: plainObject[] = createList(raw, selectors);
     const normalized = normalize(selected, [schemaType]);
 
@@ -108,15 +122,12 @@ export function generateGenerally(raw: raw, selectors: selectors, schemaType: En
     ];
 }
 
-export function generateConfig(hexo): route[] {
+
+export function generateConfigGenerally(rawConfig, name: string, selectors: selectors): route[] {
     return [
         {
-            path: `config/global.json`,
-            data: hexo.config
-        },
-        {
-            path: `config/theme.json`,
-            data: hexo.theme.config
+            path: `config/${name}.json`,
+            data: createSelectedObject(rawConfig, selectors)
         }
-    ];
+    ]
 }

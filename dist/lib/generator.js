@@ -3,6 +3,9 @@ var normalizr_1 = require("normalizr");
 var helper_1 = require("./helper");
 var schema_1 = require("./schema");
 function generatePosts(rawPostsList, selectors, extracts) {
+    if (!helper_1.hasIdRename(selectors)) {
+        selectors.push({ path: '_id', rename: 'post_id' });
+    }
     var posts = rawPostsList
         .filter(function (rawPost) { return rawPost.published; })
         .sort(function (left, right) { return left.date.unix() - right.date.unix(); })
@@ -36,6 +39,9 @@ function generatePosts(rawPostsList, selectors, extracts) {
 }
 exports.generatePosts = generatePosts;
 function generatePages(rawPagesList, selectors, extracts) {
+    if (!helper_1.hasIdRename(selectors)) {
+        selectors.push({ path: '_id', rename: 'page_id' });
+    }
     var pages = rawPagesList
         .sort(function (left, right) { return left.date.unix() - right.date.unix(); })
         .map(function (rawPage) { return helper_1.createSelectedObject(rawPage, selectors); });
@@ -67,6 +73,12 @@ function generatePages(rawPagesList, selectors, extracts) {
 }
 exports.generatePages = generatePages;
 function generateGenerally(raw, selectors, schemaType, prefix) {
+    if (!helper_1.hasIdRename(selectors)) {
+        if (prefix === 'tags')
+            selectors.push({ path: '_id', rename: 'tag_id' });
+        if (prefix === 'categories')
+            selectors.push({ path: '_id', rename: 'category_id' });
+    }
     var selected = helper_1.createList(raw, selectors);
     var normalized = normalizr_1.normalize(selected, [schemaType]);
     return [
@@ -81,16 +93,12 @@ function generateGenerally(raw, selectors, schemaType, prefix) {
     ];
 }
 exports.generateGenerally = generateGenerally;
-function generateConfig(hexo) {
+function generateConfigGenerally(rawConfig, name, selectors) {
     return [
         {
-            path: "config/global.json",
-            data: hexo.config
-        },
-        {
-            path: "config/theme.json",
-            data: hexo.theme.config
+            path: "config/" + name + ".json",
+            data: helper_1.createSelectedObject(rawConfig, selectors)
         }
     ];
 }
-exports.generateConfig = generateConfig;
+exports.generateConfigGenerally = generateConfigGenerally;

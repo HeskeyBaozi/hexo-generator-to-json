@@ -50,4 +50,38 @@ declare namespace toJson {
         categories: raw;
         tags: raw
     }
+
+    export interface rawToJsonConfig {
+        configs: boolean|{
+            global: selectors,
+            theme: selectors
+        };
+        posts: boolean|{
+            selectors: selectors,
+            extracts: string[]
+        };
+        pages: boolean|{
+            selectors: selectors,
+            extracts: string[]
+        };
+        tags: boolean|string[];
+        categories: boolean|string[];
+    }
+
+    export interface toJsonConfig {
+        configs?: {
+            global: selectors,
+            theme: selectors
+        };
+        posts?: {
+            selectors: selectors,
+            extracts: string[]
+        };
+        pages?: {
+            selectors: selectors,
+            extracts: string[]
+        };
+        tags?: string[];
+        categories?: string[];
+    }
 }

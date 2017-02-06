@@ -23,6 +23,12 @@ function createSelectedObject(raw, selectors) {
         else {
             var rawValue = raw[selector.path];
             if (selector.childrenSelectors) {
+                if (!hasIdRename(selector.childrenSelectors)) {
+                    if (selector.path === 'tags')
+                        selectors.push({ path: '_id', rename: 'tag_id' });
+                    if (selector.path === 'categories')
+                        selectors.push({ path: '_id', rename: 'category_id' });
+                }
                 var toAdd = Array.isArray(rawValue)
                     ? createSelectedArray(rawValue, selector.childrenSelectors)
                     : createSelectedObject(rawValue, selector.childrenSelectors);
@@ -48,3 +54,28 @@ function createList(raw, selectors) {
     });
 }
 exports.createList = createList;
+function hasIdRename(selectors) {
+    return selectors.some(function (selector) {
+        if (typeof selector === 'string')
+            return false;
+        else
+            return selector.path === '_id' && !!selector.rename;
+    });
+}
+exports.hasIdRename = hasIdRename;
+function merge(rawConfig, defaultConfig) {
+    var result = defaultConfig;
+    Object.keys(rawConfig).forEach(function (key) {
+        var rawValue = rawConfig[key];
+        if (typeof rawValue === 'boolean') {
+            if (!rawValue) {
+                delete result[key];
+            }
+        }
+        else {
+            result[key] = rawConfig[key];
+        }
+    });
+    return result;
+}
+exports.merge = merge;
