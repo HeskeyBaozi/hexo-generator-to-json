@@ -42,8 +42,8 @@ const defaultConfig: toJsonConfig = {
         ],
         extracts: ['content']
     },
-    tags: [],
-    categories: []
+    tags: ['name'],
+    categories: ['name', 'parent']
 };
 const config: toJsonConfig = merge(hexo.config.toJson, defaultConfig);
 

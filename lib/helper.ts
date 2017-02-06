@@ -70,13 +70,30 @@ export function hasIdRename(selectors: selectors): boolean {
     });
 }
 
+const emptyConfig: toJsonConfig = {
+    configs: {
+        global: [],
+        theme: []
+    },
+    posts: {
+        selectors: [],
+        extracts: []
+    },
+    pages: {
+        selectors: [],
+        extracts: []
+    },
+    tags: [],
+    categories: []
+};
+
 export function merge(rawConfig: rawToJsonConfig, defaultConfig: toJsonConfig): toJsonConfig {
     const result: toJsonConfig = defaultConfig;
     Object.keys(rawConfig).forEach(key => {
         const rawValue: boolean|plainObject = rawConfig[key];
         if (typeof rawValue === 'boolean') {
             if (!rawValue) {
-                delete result[key];
+                result[key] = emptyConfig[key];
             }
         } else {
             result[key] = rawConfig[key];

@@ -33,8 +33,8 @@ var defaultConfig = {
         ],
         extracts: ['content']
     },
-    tags: [],
-    categories: []
+    tags: ['name'],
+    categories: ['name', 'parent']
 };
 var config = helper_1.merge(hexo.config.toJson, defaultConfig);
 hexo.extend.generator.register('toJson', function (site) {

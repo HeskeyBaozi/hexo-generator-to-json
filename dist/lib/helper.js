@@ -63,13 +63,29 @@ function hasIdRename(selectors) {
     });
 }
 exports.hasIdRename = hasIdRename;
+var emptyConfig = {
+    configs: {
+        global: [],
+        theme: []
+    },
+    posts: {
+        selectors: [],
+        extracts: []
+    },
+    pages: {
+        selectors: [],
+        extracts: []
+    },
+    tags: [],
+    categories: []
+};
 function merge(rawConfig, defaultConfig) {
     var result = defaultConfig;
     Object.keys(rawConfig).forEach(function (key) {
         var rawValue = rawConfig[key];
         if (typeof rawValue === 'boolean') {
             if (!rawValue) {
-                delete result[key];
+                result[key] = emptyConfig[key];
             }
         }
         else {

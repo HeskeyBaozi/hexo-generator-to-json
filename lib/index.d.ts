@@ -69,19 +69,19 @@ declare namespace toJson {
     }
 
     export interface toJsonConfig {
-        configs?: {
+        configs: {
             global: selectors,
             theme: selectors
         };
-        posts?: {
+        posts: {
             selectors: selectors,
             extracts: string[]
         };
-        pages?: {
+        pages: {
             selectors: selectors,
             extracts: string[]
         };
-        tags?: string[];
-        categories?: string[];
+        tags: string[];
+        categories: string[];
     }
 }
