@@ -27,8 +27,8 @@ hexo.extend.generator.register('toJson', site => {
             },
             {path: '_id', rename: 'post_id'}
         ], ['content']),
-        ...generateGenerally(site.tags, ['name', {path: '_id', rename: 'tag_id'}], tag, 'tags'),
-        ...generateGenerally(site.categories, ['name', 'parent', {
+        ...generateGenerally(site.tags.data, ['name', {path: '_id', rename: 'tag_id'}], tag, 'tags'),
+        ...generateGenerally(site.categories.data, ['name', 'parent', {
             path: '_id',
             rename: 'category_id'
         }], category, 'categories')

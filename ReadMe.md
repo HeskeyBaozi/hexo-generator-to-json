@@ -20,4 +20,5 @@ the `.json`s will generated in the folder `:root/public/api`
 
 ## Example
 
-Coming soon...
+the general generated files are like that:
+![](./assets/example.png)
