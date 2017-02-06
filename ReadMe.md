@@ -21,7 +21,7 @@ the `.json`s will generated in the folder `:root/public/api`
 ## Output
 
 ```js
-const interface = {
+const outputDir = {
     public: {
         api: {
             config: [
@@ -115,4 +115,41 @@ const interface = {
         tags: string[];
         categories: string[];
     }
+```
+
+## interface example
+
+```yaml
+toJson:
+  configs: false # donnot generate the global and theme config api.
+  pages:
+    selectors:
+      - title # string selector
+      - date
+      - updated
+      - comments
+      - excerpt
+      - more
+      - source
+      - permalink
+      - photos
+      - link
+    extracts: [content]
+  posts:
+    selectors:
+      - title
+      - date
+      - updated
+      - comments
+      - excerpt
+      - more
+      - source
+      - permalink
+      - photos
+      - link
+      - {path: tags, childrenSelectors: ['name', 'slug', 'permalink']} # object selector
+      - {path: categories, childrenSelectors: ['name', 'slug', 'permalink']}
+    extracts: [content]
+  tags: true # using default config
+  categories: true
 ```
