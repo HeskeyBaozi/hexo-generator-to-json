@@ -18,7 +18,55 @@ the `Hexo` will quickly scan the `package.json`, and automatically run the gener
 
 the `.json`s will generated in the folder `:root/public/api`
 
-## Example
+## Interface
 
-the general generated files are like that:
-![](./assets/example.png)
+```js
+const interface = {
+    public: {
+        api: {
+            config: [
+                'global.json', // _config.yml in hexo based dir
+                'theme.json' // _config.yml in theme based dir
+            ],
+            posts: [
+                'index.json',
+                {
+                    exampleHashedKey1ForPost: [
+                        'index.json', // basic information
+                        'content.json' // other extracts fields
+                    ],
+                    exampleHashedKey2ForPost: [
+                        'index.json', // basic information
+                        'content.json' // other extracts fields
+                    ],
+                    // and so on...
+                }
+            ],
+            pages: [
+                'index.json',
+                {
+                    exampleHashedKey1ForPage: [
+                        'index.json', // basic information
+                        'content.json' // other extracts fields
+                        // and so on...
+                    ],
+                    exampleHashedKey2ForPage: [
+                        'index.json', // basic information
+                        'content.json' // other extracts fields
+                        // and so on...
+                    ],
+                    // and so on...
+                }
+            ],
+            tags: [
+                'entities.json',
+                'index.json'
+            ],
+            categories: [
+                'entities.json',
+                'index.json'
+            ]
+        }
+    }
+};
+```

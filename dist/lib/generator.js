@@ -29,7 +29,10 @@ function generatePosts(rawPostsList, selectors, extracts) {
     }
     var extractsList = extracts.map(function (propName) { return generateRoutes(rawPostsList, propName); });
     var flatten = extractsList.reduce(function (leftList, rightList) { return leftList.concat(rightList.slice()); });
-    return basicResult.concat(flatten);
+    return [{
+            path: 'posts/index.json',
+            data: postsNormalized.result
+        }].concat(basicResult, flatten);
 }
 exports.generatePosts = generatePosts;
 function generatePages(rawPagesList, selectors, extracts) {
@@ -57,7 +60,10 @@ function generatePages(rawPagesList, selectors, extracts) {
     }
     var extractsList = extracts.map(function (propName) { return generateRoutes(rawPagesList, propName); });
     var flatten = extractsList.reduce(function (leftList, rightList) { return leftList.concat(rightList.slice()); });
-    return basicResult.concat(flatten);
+    return [{
+            path: 'pages/index.json',
+            data: pagesNormalized.result
+        }].concat(basicResult, flatten);
 }
 exports.generatePages = generatePages;
 function generateGenerally(raw, selectors, schemaType, prefix) {
@@ -75,3 +81,16 @@ function generateGenerally(raw, selectors, schemaType, prefix) {
     ];
 }
 exports.generateGenerally = generateGenerally;
+function generateConfig(hexo) {
+    return [
+        {
+            path: "config/global.json",
+            data: hexo.config
+        },
+        {
+            path: "config/theme.json",
+            data: hexo.theme.config
+        }
+    ];
+}
+exports.generateConfig = generateConfig;

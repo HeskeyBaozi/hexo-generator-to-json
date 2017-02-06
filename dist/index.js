@@ -24,5 +24,5 @@ hexo.extend.generator.register('toJson', function (site) {
     ], ['content']), generator_1.generateGenerally(site.tags.data, ['name', { path: '_id', rename: 'tag_id' }], schema_1.tag, 'tags'), generator_1.generateGenerally(site.categories.data, ['name', 'parent', {
             path: '_id',
             rename: 'category_id'
-        }], schema_1.category, 'categories')));
+        }], schema_1.category, 'categories'), generator_1.generateConfig(hexo)));
 });

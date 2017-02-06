@@ -46,7 +46,10 @@ export function generatePosts(rawPostsList: rawPost[], selectors: selectors, ext
     const extractsList: (Array<route>)[] = extracts.map(propName => generateRoutes(rawPostsList, propName));
 
     const flatten = extractsList.reduce((leftList, rightList) => leftList.concat([...rightList]));
-    return [...basicResult, ...flatten];
+    return [{
+        path: 'posts/index.json',
+        data: postsNormalized.result
+    }, ...basicResult, ...flatten];
 }
 
 export function generatePages(rawPagesList: rawPage[], selectors: selectors, extracts: string[]): route[] {
@@ -83,7 +86,10 @@ export function generatePages(rawPagesList: rawPage[], selectors: selectors, ext
     const extractsList: (Array<route>)[] = extracts.map(propName => generateRoutes(rawPagesList, propName));
 
     const flatten = extractsList.reduce((leftList, rightList) => leftList.concat([...rightList]));
-    return [...basicResult, ...flatten];
+    return [{
+        path: 'pages/index.json',
+        data: pagesNormalized.result
+    }, ...basicResult, ...flatten];
 }
 
 export function generateGenerally(raw: raw, selectors: selectors, schemaType: Entity, prefix: string): route[] {
@@ -98,6 +104,19 @@ export function generateGenerally(raw: raw, selectors: selectors, schemaType: En
         {
             path: `${prefix}/entities.json`,
             data: normalized.entities
+        }
+    ];
+}
+
+export function generateConfig(hexo): route[] {
+    return [
+        {
+            path: `config/global.json`,
+            data: hexo.config
+        },
+        {
+            path: `config/theme.json`,
+            data: hexo.theme.config
         }
     ];
 }

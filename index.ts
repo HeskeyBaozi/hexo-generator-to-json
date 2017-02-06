@@ -2,7 +2,7 @@ import {tag, category} from "./lib/schema";
 declare const hexo: any;
 import {toJson} from "./lib/index";
 import {addPrefix} from './lib/helper';
-import {generatePages, generatePosts, generateGenerally} from './lib/generator';
+import {generatePages, generatePosts, generateGenerally, generateConfig} from './lib/generator';
 
 
 hexo.extend.generator.register('toJson', site => {
@@ -31,6 +31,7 @@ hexo.extend.generator.register('toJson', site => {
         ...generateGenerally(site.categories.data, ['name', 'parent', {
             path: '_id',
             rename: 'category_id'
-        }], category, 'categories')
+        }], category, 'categories'),
+        ...generateConfig(hexo)
     ]);
 });
