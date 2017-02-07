@@ -49,10 +49,17 @@ export function generatePosts(rawPostsList: rawPost[], selectors: selectors, ext
     const extractsList: (Array<route>)[] = extracts.map(propName => generateRoutes(rawPostsList, propName));
 
     const flatten = extractsList.reduce((leftList, rightList) => leftList.concat([...rightList]));
-    return [{
-        path: 'posts/index.json',
-        data: postsNormalized.result
-    }, ...basicResult, ...flatten];
+    return [
+        {
+            path: 'posts/index.json',
+            data: postsNormalized.result
+        },
+        {
+            path: 'posts/entities.json',
+            data: postsNormalized.entities.posts
+        },
+        ...basicResult, ...flatten
+    ];
 }
 
 export function generatePages(rawPagesList: rawPage[], selectors: selectors, extracts: string[]): route[] {
@@ -93,10 +100,17 @@ export function generatePages(rawPagesList: rawPage[], selectors: selectors, ext
     const extractsList: (Array<route>)[] = extracts.map(propName => generateRoutes(rawPagesList, propName));
 
     const flatten = extractsList.reduce((leftList, rightList) => leftList.concat([...rightList]));
-    return [{
-        path: 'pages/index.json',
-        data: pagesNormalized.result
-    }, ...basicResult, ...flatten];
+    return [
+        {
+            path: 'pages/index.json',
+            data: pagesNormalized.result
+        },
+        {
+            path: 'pages/entities.json',
+            data: pagesNormalized.entities.pages
+        },
+        ...basicResult, ...flatten
+    ];
 }
 
 export function generateGenerally(tagsOrCategories: raw[], selectors: selectors, schemaType: Entity, prefix: string): route[] {

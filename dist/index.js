@@ -5,14 +5,15 @@ var generator_1 = require("./lib/generator");
 var defaultConfig = {
     configs: {
         global: [
-            'title', 'subtitle', 'description', 'author', 'url'
+            'title', 'subtitle', 'description', 'author', 'url', 'per_page',
+            'date_format', 'time_format'
         ],
         theme: []
     },
     posts: {
         selectors: [
             'title', 'date', 'updated', 'comments',
-            'excerpt', 'more', 'source', 'full_source',
+            'excerpt', 'source', 'full_source',
             'path', 'permalink', 'photos', 'link',
             {
                 path: 'tags',
@@ -28,7 +29,7 @@ var defaultConfig = {
     pages: {
         selectors: [
             'title', 'date', 'updated', 'comments',
-            'excerpt', 'more', 'source', 'full_source',
+            'excerpt', 'source', 'full_source',
             'path', 'permalink', 'photos', 'link'
         ],
         extracts: ['content']

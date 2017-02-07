@@ -32,10 +32,16 @@ function generatePosts(rawPostsList, selectors, extracts) {
     }
     var extractsList = extracts.map(function (propName) { return generateRoutes(rawPostsList, propName); });
     var flatten = extractsList.reduce(function (leftList, rightList) { return leftList.concat(rightList.slice()); });
-    return [{
+    return [
+        {
             path: 'posts/index.json',
             data: postsNormalized.result
-        }].concat(basicResult, flatten);
+        },
+        {
+            path: 'posts/entities.json',
+            data: postsNormalized.entities.posts
+        }
+    ].concat(basicResult, flatten);
 }
 exports.generatePosts = generatePosts;
 function generatePages(rawPagesList, selectors, extracts) {
@@ -66,10 +72,16 @@ function generatePages(rawPagesList, selectors, extracts) {
     }
     var extractsList = extracts.map(function (propName) { return generateRoutes(rawPagesList, propName); });
     var flatten = extractsList.reduce(function (leftList, rightList) { return leftList.concat(rightList.slice()); });
-    return [{
+    return [
+        {
             path: 'pages/index.json',
             data: pagesNormalized.result
-        }].concat(basicResult, flatten);
+        },
+        {
+            path: 'pages/entities.json',
+            data: pagesNormalized.entities.pages
+        }
+    ].concat(basicResult, flatten);
 }
 exports.generatePages = generatePages;
 function generateGenerally(tagsOrCategories, selectors, schemaType, prefix) {
