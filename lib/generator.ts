@@ -1,23 +1,22 @@
 import {normalize, schema} from 'normalizr';
-import {toJson} from './index';
 import rawPost = toJson.rawPost;
 import route = toJson.route;
 import selectors = toJson.selectors;
 import plainObject = toJson.plainObject;
-import {createSelectedObject, createList, hasIdRename, momentCompare} from "./helper";
+import {createSelectedObject, hasIdRename} from "./helper";
 import {post, page} from "./schema";
 import rawPage = toJson.rawPage;
 import raw = toJson.raw;
 import Entity = schema.Entity;
 
-export function generatePosts(rawPostsList: rawPost[], selectors: selectors, extracts: string[]): route[] {
+export function generatePosts(rawPostsList: any, selectors: selectors, extracts: string[]): route[] {
     if (!hasIdRename(selectors)) {
         selectors.push({path: '_id', rename: 'post_id'});
     }
     const posts: plainObject[] =
         rawPostsList
             .filter(rawPost => rawPost.published)
-            .sort((left, right) => momentCompare(left.date, right.date))
+            .sort('-date')
             .map(rawPost => createSelectedObject(rawPost, selectors));
 
     const postsNormalized = normalize(posts, [post]);
@@ -29,11 +28,11 @@ export function generatePosts(rawPostsList: rawPost[], selectors: selectors, ext
         };
     });
 
-    function generateRoutes(rawPostsList: rawPost[], propName: string): route[] {
+    function generateRoutes(rawPostsList: any, propName: string): route[] {
         const selected =
             rawPostsList
                 .filter(rawPost => rawPost.published)
-                .sort((left, right) => momentCompare(left.date, right.date))
+                .sort('-date')
                 .map(rawPost => createSelectedObject(rawPost, [propName, {path: '_id', rename: 'post_id'}]));
 
         const normalized = normalize(selected, [new schema.Entity('posts', {}, {idAttribute: 'post_id'})]);
@@ -62,14 +61,14 @@ export function generatePosts(rawPostsList: rawPost[], selectors: selectors, ext
     ];
 }
 
-export function generatePages(rawPagesList: rawPage[], selectors: selectors, extracts: string[]): route[] {
+export function generatePages(rawPagesList: any, selectors: selectors, extracts: string[]): route[] {
     if (!hasIdRename(selectors)) {
         selectors.push({path: '_id', rename: 'page_id'});
     }
 
     const pages: plainObject[] =
         rawPagesList
-            .sort((left, right) => momentCompare(left.date, right.date))
+            .sort('-date')
             .map(rawPage => createSelectedObject(rawPage, selectors));
 
     const pagesNormalized = normalize(pages, [page]);
@@ -81,10 +80,10 @@ export function generatePages(rawPagesList: rawPage[], selectors: selectors, ext
         };
     });
 
-    function generateRoutes(rawPagesList: rawPage[], propName: string): route[] {
+    function generateRoutes(rawPagesList: any, propName: string): route[] {
         const selected =
             rawPagesList
-                .sort((left, right) => momentCompare(left.date, right.date))
+                .sort('-date')
                 .map(rawPage => createSelectedObject(rawPage, [propName, {path: '_id', rename: 'page_id'}]));
 
         const normalized = normalize(selected, [new schema.Entity('pages', {}, {idAttribute: 'page_id'})]);

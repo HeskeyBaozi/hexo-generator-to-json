@@ -1,11 +1,9 @@
-import {toJson} from "./index";
 import raw = toJson.raw;
 import selectors = toJson.selectors;
 import plainObject = toJson.plainObject;
 import route = toJson.route;
 import rawToJsonConfig = toJson.rawToJsonConfig;
 import toJsonConfig = toJson.toJsonConfig;
-import {Moment} from 'moment';
 
 
 const SEP: string = '/';
@@ -55,13 +53,6 @@ export function createSelectedObject(raw: raw, selectors: selectors): plainObjec
     return result;
 }
 
-export function createList(raw: raw, selectors: selectors): plainObject[] {
-    return Object.keys(raw).map((object_id: string) => {
-        const rawValue: raw = raw[object_id];
-        return createSelectedObject(rawValue, selectors);
-    });
-}
-
 export function hasIdRename(selectors: selectors): boolean {
     return selectors.some(selector => {
         if (typeof selector === 'string')
@@ -101,12 +92,4 @@ export function merge(rawConfig: rawToJsonConfig, defaultConfig: toJsonConfig): 
         }
     });
     return result;
-}
-
-export function momentCompare(left: Moment, right: Moment): number {
-    if (left.isAfter(right))
-        return -1;
-    else if (left.isSame(right))
-        return 0;
-    else return 1;
 }

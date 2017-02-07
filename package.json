@@ -1,6 +1,6 @@
 {
   "name": "hexo-generator-to-json",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "Generate flatten, plain and reusable json data for state manage using.",
   "main": "./dist/index.js",
   "repository": {
@@ -14,7 +14,6 @@
   },
   "homepage": "https://github.com/HeskeyBaozi/hexo-generator-to-json#readme",
   "dependencies": {
-    "moment": "^2.17.1",
     "normalizr": "^3.1.0"
   },
   "devDependencies": {

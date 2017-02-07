@@ -1,6 +1,5 @@
 import {tag, category} from "./lib/schema";
 declare const hexo: any;
-import {toJson} from "./lib/index";
 import {addPrefix, merge} from './lib/helper';
 import {
     generatePages,

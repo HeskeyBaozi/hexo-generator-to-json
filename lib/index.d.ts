@@ -1,5 +1,3 @@
-import {Moment} from 'moment';
-
 declare namespace toJson {
     export interface route {
         path: string,
@@ -27,8 +25,8 @@ declare namespace toJson {
     export interface rawPage {
         _id: string;
         title: string;
-        date: Moment;
-        updated: Moment;
+        date: any;
+        updated: any;
         comments: boolean;
         layout: string;
         content: string;
