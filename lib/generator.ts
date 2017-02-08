@@ -8,7 +8,8 @@ import {post, page} from "./schema";
 import rawPage = toJson.rawPage;
 import raw = toJson.raw;
 import Entity = schema.Entity;
-import chunk from 'lodash.chunk';
+declare const require: any;
+const chunk = require('lodash.chunk');
 
 interface generatorOption {
     selectors: selectors;

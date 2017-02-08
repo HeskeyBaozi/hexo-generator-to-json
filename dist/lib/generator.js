@@ -2,7 +2,7 @@
 var normalizr_1 = require("normalizr");
 var helper_1 = require("./helper");
 var schema_1 = require("./schema");
-var lodash_chunk_1 = require("lodash.chunk");
+var chunk = require('lodash.chunk');
 function generatePosts(_a) {
     var rawPostsList = _a.rawPostsList, selectors = _a.selectors, extracts = _a.extracts, enablePagination = _a.enablePagination, pageSize = _a.pageSize;
     if (!helper_1.hasIdRename(selectors)) {
@@ -37,7 +37,7 @@ function generatePosts(_a) {
     return [
         {
             path: 'posts/index.json',
-            data: enablePagination ? lodash_chunk_1.default(postsNormalized.result, pageSize) : postsNormalized.result
+            data: enablePagination ? chunk(postsNormalized.result, pageSize) : postsNormalized.result
         },
         {
             path: 'posts/entities.json',
@@ -78,7 +78,7 @@ function generatePages(_a) {
     return [
         {
             path: 'pages/index.json',
-            data: enablePagination ? lodash_chunk_1.default(pagesNormalized.result, pageSize) : pagesNormalized.result
+            data: enablePagination ? chunk(pagesNormalized.result, pageSize) : pagesNormalized.result
         },
         {
             path: 'pages/entities.json',
