@@ -43,15 +43,28 @@ const defaultConfig: toJsonConfig = {
         extracts: ['content']
     },
     tags: ['name'],
-    categories: ['name', 'parent']
+    categories: ['name', 'parent'],
+    enablePagination: true
 };
 const config: toJsonConfig = !hexo.config.toJson ? defaultConfig : merge(hexo.config.toJson, defaultConfig);
 
 
 hexo.extend.generator.register('toJson', site => {
     return addPrefix('api', [
-        ...generatePages(site.pages, config.pages.selectors, config.pages.extracts),
-        ...generatePosts(site.posts, config.posts.selectors, config.posts.extracts),
+        ...generatePages({
+            rawPagesList: site.pages,
+            selectors: config.pages.selectors,
+            extracts: config.pages.extracts,
+            enablePagination: config.enablePagination,
+            pageSize: hexo.config.per_page
+        }),
+        ...generatePosts({
+            rawPostsList: site.posts,
+            selectors: config.posts.selectors,
+            extracts: config.posts.extracts,
+            enablePagination: config.enablePagination,
+            pageSize: hexo.config.per_page
+        }),
         ...generateGenerally(site.tags, config.tags, tag, 'tags'),
         ...generateGenerally(site.categories, config.categories, category, 'categories'),
         ...generateConfigGenerally(hexo.config, 'global', config.configs.global),

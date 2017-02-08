@@ -30,6 +30,7 @@ const outputDir = {
             ],
             posts: [
                 'index.json',
+                'entities.json',
                 {
                     exampleHashedKey1ForPost: [
                         'index.json', // basic information
@@ -44,6 +45,7 @@ const outputDir = {
             ],
             pages: [
                 'index.json',
+                'entities.json',
                 {
                     exampleHashedKey1ForPage: [
                         'index.json', // basic information
@@ -97,6 +99,7 @@ const outputDir = {
         };
         tags: boolean|string[];
         categories: boolean|string[];
+        enablePagination: boolean;
     }
 
     export interface toJsonConfig {
@@ -114,6 +117,7 @@ const outputDir = {
         };
         tags: string[];
         categories: string[];
+        enablePagination: boolean;
     }
 ```
 
@@ -121,6 +125,7 @@ const outputDir = {
 
 ```yaml
 toJson:
+  enablePagination: ture # chunk the index.json array based on per_page in _config.yml
   configs: false # donnot generate the global and theme config api.
   pages:
     selectors:

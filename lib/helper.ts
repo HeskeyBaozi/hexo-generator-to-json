@@ -76,7 +76,8 @@ const emptyConfig: toJsonConfig = {
         extracts: []
     },
     tags: [],
-    categories: []
+    categories: [],
+    enablePagination: false
 };
 
 export function merge(rawConfig: rawToJsonConfig, defaultConfig: toJsonConfig): toJsonConfig {

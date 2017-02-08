@@ -8,8 +8,30 @@ import {post, page} from "./schema";
 import rawPage = toJson.rawPage;
 import raw = toJson.raw;
 import Entity = schema.Entity;
+import chunk from 'lodash.chunk';
 
-export function generatePosts(rawPostsList: any, selectors: selectors, extracts: string[]): route[] {
+interface generatorOption {
+    selectors: selectors;
+    extracts: string[];
+    enablePagination: boolean;
+    pageSize: number;
+}
+
+interface generatorPostsOption extends generatorOption {
+    rawPostsList: any;
+}
+
+interface generatorPagesOption extends generatorOption {
+    rawPagesList: any;
+}
+
+export function generatePosts({
+    rawPostsList,
+    selectors,
+    extracts,
+    enablePagination,
+    pageSize
+}:generatorPostsOption): route[] {
     if (!hasIdRename(selectors)) {
         selectors.push({path: '_id', rename: 'post_id'});
     }
@@ -51,7 +73,7 @@ export function generatePosts(rawPostsList: any, selectors: selectors, extracts:
     return [
         {
             path: 'posts/index.json',
-            data: postsNormalized.result
+            data: enablePagination ? chunk(postsNormalized.result, pageSize) : postsNormalized.result
         },
         {
             path: 'posts/entities.json',
@@ -61,7 +83,13 @@ export function generatePosts(rawPostsList: any, selectors: selectors, extracts:
     ];
 }
 
-export function generatePages(rawPagesList: any, selectors: selectors, extracts: string[]): route[] {
+export function generatePages({
+    rawPagesList,
+    selectors,
+    extracts,
+    enablePagination,
+    pageSize
+}:generatorPagesOption): route[] {
     if (!hasIdRename(selectors)) {
         selectors.push({path: '_id', rename: 'page_id'});
     }
@@ -102,7 +130,7 @@ export function generatePages(rawPagesList: any, selectors: selectors, extracts:
     return [
         {
             path: 'pages/index.json',
-            data: pagesNormalized.result
+            data: enablePagination ? chunk(pagesNormalized.result, pageSize) : pagesNormalized.result
         },
         {
             path: 'pages/entities.json',

@@ -2,7 +2,9 @@
 var normalizr_1 = require("normalizr");
 var helper_1 = require("./helper");
 var schema_1 = require("./schema");
-function generatePosts(rawPostsList, selectors, extracts) {
+var lodash_chunk_1 = require("lodash.chunk");
+function generatePosts(_a) {
+    var rawPostsList = _a.rawPostsList, selectors = _a.selectors, extracts = _a.extracts, enablePagination = _a.enablePagination, pageSize = _a.pageSize;
     if (!helper_1.hasIdRename(selectors)) {
         selectors.push({ path: '_id', rename: 'post_id' });
     }
@@ -35,7 +37,7 @@ function generatePosts(rawPostsList, selectors, extracts) {
     return [
         {
             path: 'posts/index.json',
-            data: postsNormalized.result
+            data: enablePagination ? lodash_chunk_1.default(postsNormalized.result, pageSize) : postsNormalized.result
         },
         {
             path: 'posts/entities.json',
@@ -44,7 +46,8 @@ function generatePosts(rawPostsList, selectors, extracts) {
     ].concat(basicResult, flatten);
 }
 exports.generatePosts = generatePosts;
-function generatePages(rawPagesList, selectors, extracts) {
+function generatePages(_a) {
+    var rawPagesList = _a.rawPagesList, selectors = _a.selectors, extracts = _a.extracts, enablePagination = _a.enablePagination, pageSize = _a.pageSize;
     if (!helper_1.hasIdRename(selectors)) {
         selectors.push({ path: '_id', rename: 'page_id' });
     }
@@ -75,7 +78,7 @@ function generatePages(rawPagesList, selectors, extracts) {
     return [
         {
             path: 'pages/index.json',
-            data: pagesNormalized.result
+            data: enablePagination ? lodash_chunk_1.default(pagesNormalized.result, pageSize) : pagesNormalized.result
         },
         {
             path: 'pages/entities.json',

@@ -70,7 +70,8 @@ var emptyConfig = {
         extracts: []
     },
     tags: [],
-    categories: []
+    categories: [],
+    enablePagination: false
 };
 function merge(rawConfig, defaultConfig) {
     var result = defaultConfig;

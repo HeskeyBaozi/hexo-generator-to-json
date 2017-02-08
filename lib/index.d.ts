@@ -64,6 +64,7 @@ declare namespace toJson {
         };
         tags: boolean|string[];
         categories: boolean|string[];
+        enablePagination: boolean;
     }
 
     export interface toJsonConfig {
@@ -81,5 +82,6 @@ declare namespace toJson {
         };
         tags: string[];
         categories: string[];
+        enablePagination: boolean;
     }
 }
